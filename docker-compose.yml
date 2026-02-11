@@ -1,0 +1,14 @@
+services:
+  batocera_builder:
+    image: melviserpa/batocera.linux-build:latest
+    container_name: batocera_builder
+    stdin_open: true
+    tty: true
+    volumes:
+#      - /mnt/build/batocera.linux:/src/batocera.linux
+      - /home/eserpa/batocera.linux:/src/batocera.linux
+      - /home/eserpa/.ssh:/root/.ssh
+    command: /bin/bash
+
+
+
