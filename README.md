@@ -119,8 +119,8 @@ cd /src/batocera.linux
 
 | Host | Container | Propósito |
 |------|-----------|-----------|
-| `/home/eserpa/batocera.linux` | `/src/batocera.linux` | Código-fonte do Batocera |
-| `/home/eserpa/.ssh` | `/root/.ssh` | Credenciais SSH |
+| `${HOME}/batocera.linux` | `/src/batocera.linux` | Código-fonte do Batocera |
+| `${HOME}/.ssh` | `/root/.ssh` | Credenciais SSH |
 
 ## 🔧 Configurações
 
@@ -180,6 +180,29 @@ O build do Batocera requer bastante espaço. Considere aumentar o tamanho da par
 
 ### Container não inicia
 Execute `docker-compose logs` para ver detalhes do erro
+
+### 🌐 Servidor Web para Upgrades de Versão
+
+O servidor web definido em [`docker-compose.webserver.yml`](docker-compose.webserver.yml) serve as imagens compiladas do Batocera.Linux (localizadas em `/src/batocera.linux/output`) na porta 8080. Isso permite que dispositivos Batocera façam upgrades de versão remotamente, apontando para a URL do servidor (ex: `http://<IP-do-host>:8080`).
+
+Para iniciar o servidor web:
+```bash
+docker-compose -f docker-compose.webserver.yml up
+```
+
+Para parar:
+CTRL+C
+```bash
+docker-compose -f docker-compose.webserver.yml down
+```
+
+No dispositivo batocera, para realizar o upgrade (via SSh):
+```bash
+batocera-upgrade http://0.0.0.0:8080
+```
+Onde `http://0.0.0.0` é o IP do seu webserver.
+
+Para mais informações sobre upgrades, consulte [Compilação do Batocera.Linux](https://wiki.batocera.org/compile_batocera.linux#compilation).
 
 ## 📦 Versões
 

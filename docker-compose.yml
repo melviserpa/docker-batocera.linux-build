@@ -5,9 +5,8 @@ services:
     stdin_open: true
     tty: true
     volumes:
-#      - /mnt/build/batocera.linux:/src/batocera.linux
-      - /home/eserpa/batocera.linux:/src/batocera.linux
-      - /home/eserpa/.ssh:/root/.ssh
+      - ${HOME}/batocera.linux:/src/batocera.linux
+      - ${HOME}/.ssh:/root/.ssh
     command: /bin/bash
 
 

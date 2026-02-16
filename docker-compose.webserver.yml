@@ -1,0 +1,14 @@
+services:
+  batocera_builder:
+    image: melviserpa/batocera.linux-build:latest
+    container_name: batocera_webserver
+    stdin_open: true
+    tty: true
+    volumes:
+      - ${HOME}/batocera.linux/output/bcm2837/images/batocera/images/bcm2837:/src/batocera.linux/output
+    ports:
+      - "8080:8080"
+    command: python3 -m http.server --directory /src/batocera.linux/output 8080
+
+
+
