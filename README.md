@@ -185,10 +185,47 @@ Execute `docker-compose logs` para ver detalhes do erro
 
 O servidor web definido em [`docker-compose.webserver.yml`](docker-compose.webserver.yml) serve as imagens compiladas do Batocera.Linux (localizadas em `/src/batocera.linux/output`) na porta 8080. Isso permite que dispositivos Batocera façam upgrades de versão remotamente, apontando para a URL do servidor (ex: `http://<IP-do-host>:8080`).
 
-Para iniciar o servidor web:
+Uso da variável `PLATFORM`
+
+O `docker-compose.webserver.yml` usa a variável de ambiente `PLATFORM` para montar o volume que contém as imagens compiladas para uma arquitetura/plataforma específica. Se `PLATFORM` não for informada, o valor padrão `bcm2837` será usado.
+
+Exemplo do mapeamento de volume dentro do `docker-compose.webserver.yml`:
+
+```
+- ${HOME}/batocera.linux/output/${PLATFORM:-bcm2837}/images/batocera/images/${PLATFORM:-bcm2837}:/src/batocera.linux/output
+```
+
+Como executar o servidor web especificando a plataforma (ex.: `bcm2837` — padrão):
+
+Inline (uma execução):
+```bash
+PLATFORM=bcm2837 docker-compose -f docker-compose.webserver.yml up
+```
+
+Exportando a variável para a sessão atual:
+```bash
+export PLATFORM=bcm2837
+docker-compose -f docker-compose.webserver.yml up
+```
+
+Usando um arquivo `.env` (opcional): crie um arquivo `.env` no diretório do projeto com a linha:
+```
+PLATFORM=bcm2837
+```
+e então execute:
 ```bash
 docker-compose -f docker-compose.webserver.yml up
 ```
+
+Plataformas disponíveis:
+```
+bcm2837
+x86_64
+rk3568
+h700
+```
+Obs: Podem variar de acordo com o build executado no batocera.linux.
+
 
 Para parar:
 CTRL+C
@@ -196,11 +233,10 @@ CTRL+C
 docker-compose -f docker-compose.webserver.yml down
 ```
 
-No dispositivo batocera, para realizar o upgrade (via SSh):
+No dispositivo Batocera, para realizar o upgrade (via SSH):
 ```bash
-batocera-upgrade http://0.0.0.0:8080
+batocera-upgrade http://<IP-do-host>:8080
 ```
-Onde `http://0.0.0.0` é o IP do seu webserver.
 
 Para mais informações sobre upgrades, consulte [Compilação do Batocera.Linux](https://wiki.batocera.org/compile_batocera.linux#compilation).
 

@@ -5,7 +5,7 @@ services:
     stdin_open: true
     tty: true
     volumes:
-      - ${HOME}/batocera.linux/output/bcm2837/images/batocera/images/bcm2837:/src/batocera.linux/output
+      - ${HOME}/batocera.linux/output/${PLATFORM:-bcm2837}/images/batocera/images/${PLATFORM:-bcm2837}:/src/batocera.linux/output
     ports:
       - "8080:8080"
     command: python3 -m http.server --directory /src/batocera.linux/output 8080
